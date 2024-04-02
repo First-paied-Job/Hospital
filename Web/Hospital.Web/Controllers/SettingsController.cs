@@ -5,7 +5,7 @@
 
     using Hospital.Data.Common.Repositories;
     using Hospital.Data.Models;
-    using Hospital.Services.Data;
+    using Hospital.Services.Data.Contracts;
     using Hospital.Web.ViewModels.Settings;
 
     using Microsoft.AspNetCore.Mvc;

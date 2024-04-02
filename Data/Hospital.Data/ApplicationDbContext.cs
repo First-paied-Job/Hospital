@@ -3,12 +3,14 @@
     using System;
     using System.Linq;
     using System.Reflection;
+    using System.Reflection.Emit;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Hospital.Data.Common.Models;
     using Hospital.Data.Models;
-
+    using Hospital.Data.Models.Hospitals;
+    using Hospital.Data.Models.Hospitals.People;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +27,22 @@
         }
 
         public DbSet<Setting> Settings { get; set; }
+
+        public DbSet<Director> Directors { get; set; }
+
+        public DbSet<Doctor> Doctors { get; set; }
+
+        public DbSet<Patient> Patients { get; set; }
+
+        public DbSet<Hospital> Hospitals { get; set; }
+
+        public DbSet<Department> Departments { get; set; }
+
+        public DbSet<Illness> Illnesses { get; set; }
+
+        public DbSet<Room> Rooms { get; set; }
+
+        public DbSet<IllnessPatient> IllnessPatient { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 
@@ -72,6 +90,49 @@
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
+
+            builder.Entity<ApplicationUser>()
+            .HasOne(u => u.Director)
+            .WithOne()
+            .HasForeignKey<Director>(d => d.Id);
+
+            builder.Entity<ApplicationUser>()
+                .HasOne(u => u.Doctor)
+                .WithOne()
+                .HasForeignKey<Doctor>(d => d.Id);
+
+            builder.Entity<ApplicationUser>()
+                .HasOne(u => u.Patient)
+                .WithOne()
+                .HasForeignKey<Patient>(p => p.Id);
+
+            // Configure Clinic to Doctor relationship
+            builder.Entity<Department>()
+                .HasMany(c => c.Doctors)
+                .WithOne(d => d.Department)
+                .HasForeignKey(d => d.DepartmentId);
+
+            // Configure Clinic to Boss relationship
+            builder.Entity<Department>()
+                .HasOne(c => c.Boss)
+                .WithOne()
+                .HasForeignKey<Department>(c => c.BossId)
+                .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete
+
+            // Configure Doctor to Department relationship
+            builder.Entity<Doctor>()
+                .HasOne(d => d.Department)
+                .WithMany(dept => dept.Doctors)
+                .HasForeignKey(d => d.DepartmentId)
+                .IsRequired(false); // Adjust as per your requirements
+
+            builder.Entity<Hospital>()
+                .HasOne(h => h.Director)
+                .WithOne(h => h.Hospital)
+                .HasForeignKey<Hospital>(h => h.DirectorId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Entity<IllnessPatient>().HasKey(x => new { x.PatientId, x.IllnessId });
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

@@ -5,6 +5,7 @@
 
     using Hospital.Data.Common.Repositories;
     using Hospital.Data.Models;
+    using Hospital.Services.Data.Contracts;
     using Hospital.Services.Mapping;
 
     public class SettingsService : ISettingsService

@@ -10,7 +10,7 @@
     },
     "documentationRules": {
       "companyName": "Hospital",
-      "copyrightText": "Copyright (c) {companyName}. All Rights Reserved.",
+      "copyrightText": "Copyright (c) MICO. All Rights Reserved.",
       "documentInterfaces": false,
       "documentInternalElements": false
     },

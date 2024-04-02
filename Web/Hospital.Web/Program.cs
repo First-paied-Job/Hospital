@@ -9,6 +9,7 @@
     using Hospital.Data.Repositories;
     using Hospital.Data.Seeding;
     using Hospital.Services.Data;
+    using Hospital.Services.Data.Contracts;
     using Hospital.Services.Mapping;
     using Hospital.Services.Messaging;
     using Hospital.Web.ViewModels;
@@ -65,6 +66,10 @@
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<IAdministrationService, AdministrationService>();
+            services.AddTransient<IDoctorService, DoctorService>();
+            services.AddTransient<IPatientService, PatientService>();
+            services.AddTransient<IDirectorService, DirectorService>();
         }
 
         private static void Configure(WebApplication app)

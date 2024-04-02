@@ -5,7 +5,7 @@ namespace Hospital.Data.Models
     using System.Collections.Generic;
 
     using Hospital.Data.Common.Models;
-
+    using Hospital.Data.Models.Hospitals.People;
     using Microsoft.AspNetCore.Identity;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
@@ -33,5 +33,11 @@ namespace Hospital.Data.Models
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
 
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
+
+        public virtual Director Director { get; set; }
+
+        public virtual Doctor Doctor { get; set; }
+
+        public virtual Patient Patient { get; set; }
     }
 }

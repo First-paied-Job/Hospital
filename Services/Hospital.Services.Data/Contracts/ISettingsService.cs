@@ -1,4 +1,4 @@
-﻿namespace Hospital.Services.Data
+﻿namespace Hospital.Services.Data.Contracts
 {
     using System.Collections.Generic;
 

@@ -1,11 +1,11 @@
 ﻿namespace Hospital.Web.Areas.Administration.Controllers
 {
-    using Hospital.Services.Data;
+    using Hospital.Services.Data.Contracts;
     using Hospital.Web.ViewModels.Administration.Dashboard;
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class DashboardController : AdministrationController
+    public class DashboardController : DoctorController
     {
         private readonly ISettingsService settingsService;
 

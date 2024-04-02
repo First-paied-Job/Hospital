@@ -4,6 +4,7 @@ using Hospital.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hospital.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240402192516_ModelCreation")]
+    partial class ModelCreation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,9 +153,6 @@ namespace Hospital.Data.Migrations
                     b.Property<string>("BossId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("HospitalId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -161,8 +161,6 @@ namespace Hospital.Data.Migrations
                     b.HasIndex("BossId")
                         .IsUnique()
                         .HasFilter("[BossId] IS NOT NULL");
-
-                    b.HasIndex("HospitalId");
 
                     b.ToTable("Departments");
                 });
@@ -468,13 +466,7 @@ namespace Hospital.Data.Migrations
                         .HasForeignKey("Hospital.Data.Models.Hospitals.Department", "BossId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Hospital.Data.Models.Hospitals.Hospital", "Hospital")
-                        .WithMany("Departments")
-                        .HasForeignKey("HospitalId");
-
                     b.Navigation("Boss");
-
-                    b.Navigation("Hospital");
                 });
 
             modelBuilder.Entity("Hospital.Data.Models.Hospitals.Hospital", b =>
@@ -636,11 +628,6 @@ namespace Hospital.Data.Migrations
                     b.Navigation("Patients");
 
                     b.Navigation("Rooms");
-                });
-
-            modelBuilder.Entity("Hospital.Data.Models.Hospitals.Hospital", b =>
-                {
-                    b.Navigation("Departments");
                 });
 
             modelBuilder.Entity("Hospital.Data.Models.Hospitals.People.Director", b =>
