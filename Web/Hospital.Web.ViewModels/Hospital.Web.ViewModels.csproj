@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Doctors\" />
     <Folder Include="Directors\" />
     <Folder Include="Patients\" />
   </ItemGroup>

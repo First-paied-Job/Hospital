@@ -16,6 +16,7 @@
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -66,7 +67,7 @@
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
-            services.AddTransient<IAdministrationService, AdministrationService>();
+            services.AddScoped<IAdministrationService, AdministrationService>();
             services.AddTransient<IDoctorService, DoctorService>();
             services.AddTransient<IPatientService, PatientService>();
             services.AddTransient<IDirectorService, DirectorService>();
