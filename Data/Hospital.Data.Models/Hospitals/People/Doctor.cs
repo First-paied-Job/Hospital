@@ -7,6 +7,7 @@
         public Doctor()
         {
             this.Patients = new HashSet<Patient>();
+            this.Departments = new HashSet<Department>();
         }
 
         public string Id { get; set; }
@@ -17,10 +18,12 @@
 
         public string Qualification { get; set; }
 
-        public string DepartmentId { get; set; }
+        public string? BossDepartmentId { get; set; }
 
-        public virtual Department Department { get; set; }
+        public virtual Department BossDepartment { get; set; }
 
         public virtual ICollection<Patient> Patients { get; set; }
+
+        public virtual ICollection<Department> Departments { get; set; }
     }
 }

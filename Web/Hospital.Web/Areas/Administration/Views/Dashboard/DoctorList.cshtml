@@ -1,0 +1,29 @@
+﻿﻿@using Hospital.Web.ViewModels.Administration.Dashboard.Doctor;
+
+@model ICollection<DoctorViewModel>
+
+<main class="mt-3">
+    @if (Model.Count == 0)
+    {
+        <h1 class="text-center suls-text-color">There are no doctors at the moment!</h1>
+    }
+    else
+    {
+        <h1 class="text-center suls-text-color">Current doctors</h1>
+        @foreach (DoctorViewModel doctor in Model)
+        {
+            <div>
+                <p>Doctor Name - @doctor.FullName</p>
+                <p>Address - @doctor.Adress</p>
+                <p>Qualifications - @doctor.Qualification</p>
+                <div>
+                    <a href="/Administration/Dashboard/RemoveDoctor?doctorId=@doctor.DoctorId" class="btn forum-go-back-btn text-uppercase">Remove Doctor</a>
+                </div>
+                <div>
+                    <a href="/Administration/Dashboard/EditDoctor?doctorId=@doctor.DoctorId" class="btn forum-go-back-btn text-uppercase">Edit Doctor</a>
+                </div>
+            </div>
+        }
+    }
+    
+</main>

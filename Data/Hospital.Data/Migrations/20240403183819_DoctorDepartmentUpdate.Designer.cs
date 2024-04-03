@@ -4,6 +4,7 @@ using Hospital.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hospital.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240403183819_DoctorDepartmentUpdate")]
+    partial class DoctorDepartmentUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -502,8 +505,7 @@ namespace Hospital.Data.Migrations
 
                     b.HasOne("Hospital.Data.Models.Hospitals.Hospital", "Hospital")
                         .WithMany("Departments")
-                        .HasForeignKey("HospitalId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .HasForeignKey("HospitalId");
 
                     b.Navigation("Boss");
 

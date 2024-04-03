@@ -1,0 +1,22 @@
+﻿@{
+    this.ViewData["Title"] = "Hospital dashboard";
+}
+
+<h1>@this.ViewData["Title"]</h1>
+<div>
+    <h2> Add a new hospital: </h2>
+    <div class="submit-button ">
+        <a href="/Administration/Dashboard/AddHospital">
+            <button class="btn btn-common" id="submit" type="submit">Add Hospital</button>
+            <div id="msgSubmit" class="h3 text-center hidden"></div>
+            <div class="clearfix"></div>
+    </div> </a>
+    <br />
+    <div class="submit-button ">
+        <a href="/Administration/Dashboard/HospitalList">
+            <button class="btn btn-common" id="submit" type="submit">Hospital list</button>
+            <div id="msgSubmit" class="h3 text-center hidden"></div>
+            <div class="clearfix"></div>
+        </a>
+    </div>
+ </div>

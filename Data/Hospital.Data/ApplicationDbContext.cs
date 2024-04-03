@@ -106,11 +106,7 @@
                 .WithOne()
                 .HasForeignKey<Patient>(p => p.Id);
 
-            // Configure Clinic to Doctor relationship
-            builder.Entity<Department>()
-                .HasMany(c => c.Doctors)
-                .WithOne(d => d.Department)
-                .HasForeignKey(d => d.DepartmentId);
+            #region Department Doctor
 
             // Configure Clinic to Boss relationship
             builder.Entity<Department>()
@@ -119,18 +115,33 @@
                 .HasForeignKey<Department>(c => c.BossId)
                 .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete
 
-            // Configure Doctor to Department relationship
             builder.Entity<Doctor>()
-                .HasOne(d => d.Department)
-                .WithMany(dept => dept.Doctors)
-                .HasForeignKey(d => d.DepartmentId)
-                .IsRequired(false); // Adjust as per your requirements
+               .HasOne(c => c.BossDepartment)
+               .WithOne()
+               .HasForeignKey<Doctor>(c => c.BossDepartmentId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Doctor>()
+                .HasMany(d => d.Departments)
+                .WithMany(d => d.Doctors)
+                .UsingEntity(j => j.ToTable("DoctorDepartments"));
+
+            #endregion
+
+            #region Hospital
 
             builder.Entity<Hospital>()
                 .HasOne(h => h.Director)
                 .WithOne(h => h.Hospital)
                 .HasForeignKey<Hospital>(h => h.DirectorId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Entity<Hospital>()
+                .HasMany(h => h.Departments)
+                .WithOne(h => h.Hospital)
+                .OnDelete(DeleteBehavior.ClientCascade);
+
+            #endregion
 
             builder.Entity<IllnessPatient>().HasKey(x => new { x.PatientId, x.IllnessId });
         }
