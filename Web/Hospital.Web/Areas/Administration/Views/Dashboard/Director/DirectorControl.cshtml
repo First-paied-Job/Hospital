@@ -1,0 +1,22 @@
+﻿@{
+    this.ViewData["Title"] = "Director control panel";
+}
+
+<h1>@this.ViewData["Title"]</h1>
+<div>
+    <h2> Add a new Director: </h2>
+    <div class="submit-button ">
+        <a href="/Administration/Dashboard/AddDirector">
+            <button class="btn btn-common" id="submit" type="submit">Add Director</button>
+            <div id="msgSubmit" class="h3 text-center hidden"></div>
+            <div class="clearfix"></div>
+    </div> </a>
+    <br />
+    <div class="submit-button ">
+        <a href="/Administration/Dashboard/DirectorList">
+            <button class="btn btn-common" id="submit" type="submit">Directors list</button>
+            <div id="msgSubmit" class="h3 text-center hidden"></div>
+            <div class="clearfix"></div>
+        </a>
+    </div>
+</div>

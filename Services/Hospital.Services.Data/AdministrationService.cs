@@ -11,8 +11,10 @@
     using Hospital.Data.Models.Hospitals.People;
     using Hospital.Services.Data.Contracts;
     using Hospital.Web.ViewModels.Administration.Dashboard.Department;
+    using Hospital.Web.ViewModels.Administration.Dashboard.Director;
     using Hospital.Web.ViewModels.Administration.Dashboard.Doctor;
     using Hospital.Web.ViewModels.Administration.Dashboard.Hospital;
+    using Hospital.Web.ViewModels.Administration.Dashboard.Room;
     using Hospital.Web.ViewModels.Administration.Dashboard.User;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
@@ -219,6 +221,108 @@
 
         #endregion
 
+        #region Director
+
+        public async Task AddDirectorAsync(AddDirectorInput input)
+        {
+            var user = await this.db.Users.FirstOrDefaultAsync(u => u.Email == input.UserEmail);
+
+            if (user == null)
+            {
+                throw new ArgumentException("There is not a user with the given email in our system!");
+            }
+
+            if (await this.userManager.IsInRoleAsync(user, GlobalConstants.DirectorRoleName) == false)
+            {
+                throw new ArgumentException("The given person does not have the director role! Add the role first in the assign roles tab");
+            }
+
+            var check = await this.db.Directors.FirstOrDefaultAsync(d => d.FullName == input.FullName);
+
+            if (check != null)
+            {
+                throw new ArgumentException("There is already a director with this name!");
+            }
+
+            var hospital = await this.db.Hospitals.Include(h => h.Director).FirstOrDefaultAsync(h => h.Name == input.HospitalName);
+
+            if (hospital == null)
+            {
+                throw new ArgumentException("There is no hopsital with this name!");
+            }
+
+            if (hospital.Director != null)
+            {
+                throw new ArgumentException("This hospital already has a director!");
+            }
+
+            var director = new Director
+            {
+                Id = user.Id,
+                FullName = input.FullName,
+                Adress = input.Adress,
+                Hospital = hospital,
+                HospitalId = hospital.HospitalId,
+            };
+
+            user.Director = director;
+
+            hospital.Director = director;
+            hospital.DirectorId = director.Id;
+
+            await this.db.Directors.AddAsync(director);
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task RemoveDirectorAsync(string directorId)
+        {
+            var director = await this.db.Directors.Include(d => d.Hospital).FirstOrDefaultAsync(d => d.Id == directorId);
+
+            if (director == null)
+            {
+                throw new ArgumentException("This person is not a director!");
+            }
+
+            this.db.Directors.Remove(director);
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task<ICollection<DirectorViewModel>> GetDirectorsAsync()
+        {
+            return await this.db.Directors.Include(d => d.Hospital).Select(d => new DirectorViewModel
+            {
+                DirectorId = d.Id,
+                Adress = d.Adress,
+                FullName = d.FullName,
+                HospitalName = d.Hospital.Name,
+                HospitalId = d.HospitalId,
+            }).ToListAsync();
+        }
+
+        public async Task<EditDirectorViewModel> GetDirectorEditAsync(string directorId)
+        {
+            var director = await this.db.Directors.FindAsync(directorId);
+
+            return new EditDirectorViewModel
+            {
+                DirectorId = director.Id,
+                FullName = director.FullName,
+                Adress = director.Adress,
+            };
+        }
+
+        public async Task EditDirectorAsync(EditDirectorInputModel input)
+        {
+            var director = await this.db.Directors.FindAsync(input.DirectorId);
+
+            director.FullName = input.FullName;
+            director.Adress = input.Adress;
+
+            await this.db.SaveChangesAsync();
+        }
+
+        #endregion
+
         #region Hospital
 
         public async Task AddHospitalAsync(HospitalInputModel input)
@@ -300,15 +404,19 @@
         public async Task RemoveHospitalAsync(string hospitalId)
         {
             var hospital = await this.db.Hospitals
+                .Include(h => h.Director)
                 .Include(h => h.Departments).ThenInclude(c => c.Doctors)
                 .Include(c => c.Departments).ThenInclude(c => c.Rooms)
-                .Include(c => c.Departments).ThenInclude(d => d.Patients)
+                .ThenInclude(r => r.Patients)
                 .FirstOrDefaultAsync(h => h.HospitalId == hospitalId);
 
             if (hospital == null)
             {
                 throw new ArgumentException("This hospital does not exist!");
             }
+
+            hospital.Director.HospitalId = null;
+            hospital.Director.Hospital = null;
 
             this.db.Hospitals.Remove(hospital);
 
@@ -350,8 +458,8 @@
         {
             var department = await this.db.Departments
                 .Include(c => c.Doctors)
-                .Include(c => c.Patients)
                 .Include(c => c.Rooms)
+                .ThenInclude(r => r.Patients)
                 .FirstOrDefaultAsync(h => h.DepartmentId == departmentId);
 
             if (department == null)
@@ -484,6 +592,48 @@
             department.Doctors.Remove(doctor);
             await this.db.SaveChangesAsync();
         }
+
+        #endregion
+
+        #region Room
+
+        public async Task AddRoomToDepartment(AddRoomToDepartmentInput input)
+        {
+            var department = await this.db.Departments.FindAsync(input.DepartmentId);
+
+            if (department == null)
+            {
+                throw new ArgumentException("The given department does not exist.");
+            }
+
+            var room = new Room
+            {
+                Name = input.Name,
+                Department = department,
+                DepartmentId = department.DepartmentId,
+                RoomTypeId = int.Parse(input.RoomType),
+            };
+
+            department.Rooms.Add(room);
+            await this.db.Rooms.AddAsync(room);
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task RemoveRoomFromDepartment(string roomId, string departmentId)
+        {
+            var room = await this.db.Rooms.FindAsync(roomId);
+            var department = await this.db.Departments.Include(d => d.Rooms).FirstOrDefaultAsync(d => d.DepartmentId == departmentId);
+
+            if (room == null || department == null)
+            {
+                throw new ArgumentException("Room or department not found");
+            }
+
+            department.Rooms.Remove(room);
+            this.db.Rooms.Remove(room);
+            await this.db.SaveChangesAsync();
+        }
+
         #endregion
     }
 }

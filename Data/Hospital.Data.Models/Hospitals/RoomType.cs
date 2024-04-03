@@ -2,8 +2,8 @@
 {
     public enum RoomType
     {
-        Operating = 0,
-        EC = 1,
-        Normal = 2,
+        Normal = 1,
+        Operating = 2,
+        EC = 3,
     }
 }

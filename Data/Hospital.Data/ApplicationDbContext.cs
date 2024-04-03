@@ -126,6 +126,11 @@
                 .WithMany(d => d.Doctors)
                 .UsingEntity(j => j.ToTable("DoctorDepartments"));
 
+            builder.Entity<Department>()
+                .HasMany(d => d.Rooms)
+                .WithOne(r => r.Department)
+                .OnDelete(DeleteBehavior.ClientCascade);
+
             #endregion
 
             #region Hospital

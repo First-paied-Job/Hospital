@@ -1,12 +1,16 @@
 ﻿namespace Hospital.Web.Areas.Administration.Controllers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Hospital.Services.Data.Contracts;
     using Hospital.Web.ViewModels.Administration.Dashboard.Department;
+    using Hospital.Web.ViewModels.Administration.Dashboard.Director;
     using Hospital.Web.ViewModels.Administration.Dashboard.Doctor;
     using Hospital.Web.ViewModels.Administration.Dashboard.Hospital;
+    using Hospital.Web.ViewModels.Administration.Dashboard.Room;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class DashboardController : DoctorController
     {
@@ -102,6 +106,69 @@
             await this.administrationService.EditDoctorAsync(input);
 
             return this.Redirect("/Administration/Dashboard/DoctorList");
+        }
+
+        #endregion
+
+        #region Director
+
+        public IActionResult DirectorControl()
+        {
+            return this.View("./Director/DirectorControl");
+        }
+
+        public IActionResult AddDirector()
+        {
+            return this.View("./Director/AddDirector");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddDirector(AddDirectorInput input)
+        {
+            try
+            {
+                await this.administrationService.AddDirectorAsync(input);
+            }
+            catch (System.Exception e)
+            {
+                this.ModelState.AddModelError("Director", e.Message);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View("./Director/AddDirector");
+            }
+
+            return this.Redirect("/Administration/Dashboard/DirectorList");
+        }
+
+        public async Task<IActionResult> RemoveDirector(string directorId)
+        {
+            await this.administrationService.RemoveDirectorAsync(directorId);
+
+            return this.Redirect("/Administration/Dashboard/DirectorList");
+        }
+
+        public async Task<IActionResult> DirectorList()
+        {
+            // Directors who had their hospital removed should be outlisted.
+            var viewModel = await this.administrationService.GetDirectorsAsync();
+            return this.View("./Director/DirectorList", viewModel);
+        }
+
+        public async Task<IActionResult> EditDirector(string directorId)
+        {
+            var viewModel = await this.administrationService.GetDirectorEditAsync(directorId);
+
+            return this.View("./Director/EditDirector", viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditDirectorPost(EditDirectorInputModel input)
+        {
+            await this.administrationService.EditDirectorAsync(input);
+
+            return this.Redirect("/Administration/Dashboard/DirectorList");
         }
 
         #endregion
@@ -264,5 +331,41 @@
 
         #endregion
 
+        #region Room
+
+        public IActionResult AddRoomToDepartment(string departmentId)
+        {
+            this.ViewBag.DepartmentId = departmentId;
+            return this.View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddRoomToDepartmentPost(AddRoomToDepartmentInput input)
+        {
+            try
+            {
+                await this.administrationService.AddRoomToDepartment(input);
+            }
+            catch (System.Exception e)
+            {
+                this.ModelState.AddModelError("noDepartment", e.Message);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View("AddRoomToDepartment", input);
+            }
+
+            return this.Redirect("/Administration/Dashboard/HospitalList");
+        }
+
+        public async Task<IActionResult> RemoveRoomFromDepartment(string roomId, string departmentId)
+        {
+            await this.administrationService.RemoveRoomFromDepartment(roomId, departmentId);
+
+            return this.Redirect("/Administration/Dashboard/HospitalList");
+        }
+
+        #endregion
     }
 }

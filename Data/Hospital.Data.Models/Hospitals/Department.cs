@@ -11,7 +11,6 @@
         {
             this.DepartmentId = Guid.NewGuid().ToString();
             this.Doctors = new HashSet<Doctor>();
-            this.Patients = new HashSet<Patient>();
             this.Rooms = new HashSet<Room>();
         }
 
@@ -28,8 +27,6 @@
         public virtual Hospital Hospital { get; set; }
 
         public virtual ICollection<Doctor> Doctors { get; set; }
-
-        public virtual ICollection<Patient> Patients { get; set; }
 
         public virtual ICollection<Room> Rooms { get; set; }
     }

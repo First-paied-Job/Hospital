@@ -3,8 +3,10 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Hospital.Web.ViewModels.Administration.Dashboard.Department;
+    using Hospital.Web.ViewModels.Administration.Dashboard.Director;
     using Hospital.Web.ViewModels.Administration.Dashboard.Doctor;
     using Hospital.Web.ViewModels.Administration.Dashboard.Hospital;
+    using Hospital.Web.ViewModels.Administration.Dashboard.Room;
     using Hospital.Web.ViewModels.Administration.Dashboard.User;
 
     public interface IAdministrationService
@@ -29,6 +31,20 @@
         public Task<EditDoctorViewModel> GetDoctorEditAsync(string doctorId);
 
         public Task EditDoctorAsync(EditDoctorInputModel input);
+
+        #endregion
+
+        #region Director
+
+        public Task AddDirectorAsync(AddDirectorInput input);
+
+        public Task RemoveDirectorAsync(string directorId);
+
+        public Task<ICollection<DirectorViewModel>> GetDirectorsAsync();
+
+        public Task<EditDirectorViewModel> GetDirectorEditAsync(string directorId);
+
+        public Task EditDirectorAsync(EditDirectorInputModel input);
 
         #endregion
 
@@ -61,6 +77,14 @@
         public Task AddDoctorToDepartment(AddDoctorToDepartmentInput input);
 
         public Task RemoveDoctorFromDepartment(string doctorId, string departmentId);
+
+        #endregion
+
+        #region Room
+
+        public Task AddRoomToDepartment(AddRoomToDepartmentInput input);
+
+        public Task RemoveRoomFromDepartment(string roomId, string departmentId);
 
         #endregion
     }

@@ -13,7 +13,7 @@
         @foreach (DepartmentViewModel department in Model)
         {
             <div>
-                <p>Department Name - @department.Name</p>
+                <h2>Department Name - @department.Name</h2>
                 @if (department.Doctors.Count > 0)
                 {
                     <div>
@@ -27,14 +27,37 @@
                         }
                     </div>
                 }
+
+                @if (department.Rooms.Count > 0)
+                {
+                    <div>
+                        <h3>Rooms in this department: </h3>
+                        @foreach (RoomDTO room in department.Rooms)
+                        {
+                            <p>@room.RoomName is a @room.RoomType room</p>
+                            <div>
+                                <a href="/Administration/Dashboard/RemoveRoomFromDepartment?roomId=@room.RoomId&departmentId=@department.DepartmentId" class="btn forum-go-back-btn text-uppercase">Remove @room.RoomName from this department</a>
+                            </div>
+                        }
+                    </div>
+                }
+
                 <div>
                     <a href="/Administration/Dashboard/AddDoctorToDepartment?departmentId=@department.DepartmentId" class="btn forum-go-back-btn text-uppercase">Add a doctor to @department.Name</a>
                 </div>
+
                 <div>
-                    <a href="/Administration/Dashboard/RemoveDepartment?departmentId=@department.DepartmentId" class="btn forum-go-back-btn text-uppercase">Remove department</a>
+                    <a href="/Administration/Dashboard/AddRoomToDepartment?departmentId=@department.DepartmentId" class="btn forum-go-back-btn text-uppercase">Add a room to @department.Name</a>
                 </div>
-                <div>
-                    <a href="/Administration/Dashboard/EditDepartment?departmentId=@department.DepartmentId" class="btn forum-go-back-btn text-uppercase">Edit department</a>
+
+
+                <div class="department-options">
+                    <div>
+                        <a href="/Administration/Dashboard/RemoveDepartment?departmentId=@department.DepartmentId" class="btn forum-go-back-btn text-uppercase">Remove department</a>
+                    </div>
+                    <div>
+                        <a href="/Administration/Dashboard/EditDepartment?departmentId=@department.DepartmentId" class="btn forum-go-back-btn text-uppercase">Edit department</a>
+                    </div>
                 </div>
             </div>
         }

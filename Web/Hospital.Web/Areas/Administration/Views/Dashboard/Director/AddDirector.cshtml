@@ -1,6 +1,6 @@
-﻿﻿@using Hospital.Web.ViewModels.Administration.Dashboard.Doctor;
+﻿﻿@using Hospital.Web.ViewModels.Administration.Dashboard.Director;
 
-@model AddDoctorInput
+@model AddDirectorInput
 
 @foreach (var modelState in ViewData.ModelState.Values)
 {
@@ -13,39 +13,39 @@
 <div class="row">
     <div class="jumbotron col-md-12">
         <div class="heading-container bottom-buffer-md">
-            <h1>Here you can add a doctor!</h1>
+            <h1>Here you can add a director!</h1>
         </div>
 
-        <form class="mx-auto half-width col-5" method="post" asp-area="Administration" asp-controller="Dashboard" asp-action="AddDoctor">
+        <form class="mx-auto half-width col-5" method="post" asp-area="Administration" asp-controller="Dashboard" asp-action="AddDirector">
             <div class="top-border-line primary-separator"></div>
 
             <div class="form-group">
-                <label asp-for="UserEmail" class="suls-text-color">Email of the user you want to make a doctor</label>
+                <label asp-for="UserEmail" class="suls-text-color">Email of the user you want to make a director</label>
                 <input asp-for="UserEmail" class="form-control" placeholder="Email...">
                 <span asp-validation-for="UserEmail" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="FullName" class="suls-text-color">Doctor's full name</label>
+                <label asp-for="FullName" class="suls-text-color">Director's full name</label>
                 <input asp-for="FullName" class="form-control" placeholder="FullName...">
                 <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Adress" class="suls-text-color">Doctor's Adress</label>
+                <label asp-for="Adress" class="suls-text-color">Director's Adress</label>
                 <input asp-for="Adress" class="form-control" placeholder="Adress...">
                 <span asp-validation-for="Adress" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Qualification" class="suls-text-color">Doctor's Qualifications</label>
-                <textarea asp-for="Qualification" class="form-control" cols="30" rows="5" placeholder="Qualification...">Qualification...</textarea>
-                <span asp-validation-for="Qualification" class="text-danger"></span>
+                <label asp-for="HospitalName" class="suls-text-color">Hospital name</label>
+                <input asp-for="HospitalName" class="form-control" placeholder="HospitalName...">
+                <span asp-validation-for="HospitalName" class="text-danger"></span>
             </div>
 
             <div class="top-border-line primary-separator"></div>
 
-            <button type="submit" class="btn forum-add-bg-color">Add this doctor to our system</button>
+            <button type="submit" class="btn forum-add-bg-color">Add this person as a director to this hospital</button>
         </form>
     </div>
 </div>

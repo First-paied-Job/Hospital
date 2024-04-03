@@ -1,0 +1,64 @@
+﻿@using Hospital.Data.Models.Hospitals
+﻿@using Hospital.Web.ViewModels.Administration.Dashboard.Room;
+
+@model AddRoomToDepartmentInput
+
+@{
+    // Define the list of options directly within the Razor page
+    var options = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "1", Text =  RoomType.Normal.ToString() },
+        new SelectListItem { Value = "2", Text = RoomType.Operating.ToString() },
+        new SelectListItem { Value = "3", Text = RoomType.EC.ToString() }
+    };
+}
+
+@foreach (var modelState in ViewData.ModelState.Values)
+{
+    foreach (var error in modelState.Errors)
+    {
+        <p class="error-message">@error.ErrorMessage</p>
+    }
+}
+
+<div class="row">
+    <div class="jumbotron col-md-12">
+        <div class="heading-container bottom-buffer-md">
+            <h1>Here you can add a room to the Department!</h1>
+        </div>
+
+        <form class="mx-auto half-width col-5" method="post" asp-area="Administration" asp-controller="Dashboard" asp-action="AddRoomToDepartmentPost">
+            <div class="top-border-line primary-separator"></div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="suls-text-color">Name</label>
+                <input asp-for="Name" class="form-control" placeholder="Name...">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="RoomType" class="suls-text-color">Name</label>
+                <select asp-for="RoomType" id="optionSelect" name="RoomType">
+                    @foreach (var option in options)
+                    {
+                        <option value="@option.Value">@option.Text</option>
+                    }
+                </select>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            @if (ViewBag.departmentId != null)
+            {
+                <input asp-for="DepartmentId" class="hide" hidden="hidden" value="@ViewBag.departmentId">
+            }
+            else
+            {
+                <input asp-for="DepartmentId" class="hide" hidden="hidden" value="@Model.DepartmentId">
+            }
+
+            <div class="top-border-line primary-separator"></div>
+
+            <button type="submit" class="btn forum-add-bg-color">Add room to Department</button>
+        </form>
+    </div>
+</div>
