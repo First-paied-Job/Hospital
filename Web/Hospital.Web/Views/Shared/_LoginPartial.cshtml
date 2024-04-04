@@ -13,7 +13,25 @@
         if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Admin</a>
+                <a class="nav-link text-dark" asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Admin Panel</a>
+            </li>
+        }
+        if (this.User.IsInRole(GlobalConstants.DoctorRoleName))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Doctor" asp-controller="Dashboard" asp-action="Index" title="Doctor">Doctor Menu</a>
+            </li>
+        }
+        if (this.User.IsInRole(GlobalConstants.DirectorRoleName))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Director" asp-controller="Dashboard" asp-action="Index" title="Director">Director Panel</a>
+            </li>
+        }
+        if (this.User.IsInRole(GlobalConstants.PatientRoleName))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Patient" asp-controller="Dashboard" asp-action="Index" title="Patient">Patient Menu</a>
             </li>
         }
         <li class="nav-item">

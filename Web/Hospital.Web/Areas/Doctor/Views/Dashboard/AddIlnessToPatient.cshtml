@@ -1,0 +1,41 @@
+﻿﻿@using Hospital.Web.ViewModels.Doctors.Patient;
+
+@model AddIlnessToPatientInput
+
+@foreach (var modelState in ViewData.ModelState.Values)
+{
+    foreach (var error in modelState.Errors)
+    {
+        <p class="error-message">@error.ErrorMessage</p>
+    }
+}
+
+<div class="row">
+    <div class="jumbotron col-md-12">
+        <div class="heading-container bottom-buffer-md">
+            <h1>Here you can add an illness to a patient!</h1>
+        </div>
+
+        <form class="mx-auto half-width col-5" method="post" asp-area="Doctor" asp-controller="Dashboard" asp-action="AddIlnessToPatient">
+            <div class="top-border-line primary-separator"></div>
+
+            <div class="form-group">
+                <label asp-for="IllnessName" class="suls-text-color">Name of the illness</label>
+                <input asp-for="IllnessName" class="form-control" placeholder="Name...">
+                <span asp-validation-for="IllnessName" class="text-danger"></span>
+            </div>
+
+            @if (ViewBag.patientId != null)
+            {
+                <input asp-for="PatientId" class="hide" hidden="hidden" value="@ViewBag.patientId">
+            }
+            else
+            {
+                <input asp-for="PatientId" class="hide" hidden="hidden" value="@Model.PatientId">
+            }
+            <div class="top-border-line primary-separator"></div>
+
+            <button type="submit" class="btn forum-add-bg-color">Add this illness to this patient</button>
+        </form>
+    </div>
+</div>

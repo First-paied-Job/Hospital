@@ -1,6 +1,5 @@
 ﻿namespace Hospital.Web.Areas.Administration.Controllers
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Hospital.Services.Data.Contracts;
@@ -10,9 +9,8 @@
     using Hospital.Web.ViewModels.Administration.Dashboard.Hospital;
     using Hospital.Web.ViewModels.Administration.Dashboard.Room;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class DashboardController : DoctorController
+    public class DashboardController : AdministrationController
     {
         private readonly IAdministrationService administrationService;
 

@@ -1,0 +1,32 @@
+﻿@using Hospital.Web.ViewModels.Doctors
+@model Hospital.Web.ViewModels.Doctors.IndexViewModel
+@{
+    this.ViewData["Title"] = "Doctor dashboard";
+}
+
+<h1>@this.ViewData["Title"]</h1>
+
+<main class="mt-3">
+    @if (Model.BossOfDepartment != null)
+    {
+        <h1>You are the boss of @Model.BossOfDepartment.Name</h1>
+    }
+
+    @if (Model.Departments.Count == 0)
+    {
+        <h1 class="text-center suls-text-color">You are in no departments at the moment!</h1>
+    }
+    else
+    {
+        <h1 class="text-center suls-text-color">Current Departments</h1>
+        @foreach (DoctorDepartmentDTO department in Model.Departments)
+        {
+            <div>
+                <h2>Department Name - @department.Name</h2>
+                <div>
+                    <a href="/Doctor/Dashboard/RoomsInDepartment?departmentId=@department.DepartmentId" class="btn forum-go-back-btn text-uppercase">View the rooms in @department.Name</a>
+                </div>
+            </div>
+        }
+    }
+</main>

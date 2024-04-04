@@ -1,0 +1,27 @@
+﻿@using Hospital.Web.ViewModels.Doctors;
+@using Hospital.Web.ViewModels.Doctors.Patient;
+
+@model PatientInfoViewModel
+
+<main class="mt-3">
+    <h1 class="text-center suls-text-color">@Model.FullName</h1>
+    <p>Address: @Model.Address</p>
+    <p>Phone: @Model.PhoneNumber</p>
+    <p>Days left: @Model.DayStayCount</p>
+    @foreach (IllnessDTO illness in Model.Ilnesses)
+    {
+        <div>
+            <h2>Illness name - @illness.Name</h2>
+            <div>
+                <a href="/Doctor/Dashboard/RemoveIlnessFromPatient?illnessId=@illness.Id&patientId=@Model.PatientId" class="btn forum-go-back-btn text-uppercase">Remove this ilness from this patient</a>
+            </div>
+        </div>
+    }
+    <div>
+        <a href="/Doctor/Dashboard/AddIlnessToPatient?patientId=@Model.PatientId" class="btn forum-go-back-btn text-uppercase">Add illness to this patient</a>
+    </div>
+
+    <div>
+        <a href="/Doctor/Dashboard/EditPatient?patientId=@Model.PatientId" class="btn forum-go-back-btn text-uppercase">Edit patient information</a>
+    </div>
+</main>

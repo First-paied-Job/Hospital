@@ -8,7 +8,7 @@
 
     [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     [Area("Administration")]
-    public class DoctorController : BaseController
+    public class AdministrationController : BaseController
     {
     }
 }
