@@ -10,9 +10,6 @@
     [Area("Patient")]
     public class PatientController : BaseController
     {
-        public IActionResult Index()
-        {
-            return this.View();
-        }
+
     }
 }

@@ -1,0 +1,35 @@
+﻿@using Hospital.Web.ViewModels.Patients
+
+@model IndexViewModel
+
+<main class="mt-3">
+    @if (Model.Department == null)
+    {
+        <h1>You are not currently in any rooms or department. Ask your doctor to add you in his!</h1>
+    }
+    else
+    {
+        @if (Model.Department != null)
+        {
+            <h1>You are currently a patient in @Model.Department.Name department</h1>
+        }
+        @if (Model.Doctor != null)
+        {
+            <h2>Your doctor's name is @Model.Doctor.Name</h2>
+            <p>He has the following qualifications: @Model.Doctor.Qulifications</p>
+        }
+        @if (Model.Room != null)
+        {
+            <h3>Your room is @Model.Room.RoomName</h3>
+            <p>It is a @Model.Room.RoomType room</p>
+        }
+        @if (Model.Illnesses.Count > 0)
+        {
+            <h3>You have these illnesses at the moment:</h3>
+            foreach (IllnessDTO illness in Model.Illnesses)
+            {
+                <p>* @illness.Name</p>
+            }
+        }
+    }
+</main>
