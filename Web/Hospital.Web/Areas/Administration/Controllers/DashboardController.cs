@@ -327,6 +327,20 @@
             return this.Redirect("/Administration/Dashboard/HospitalList");
         }
 
+        public async Task<IActionResult> MakeDoctorBossOfDepartment(string doctorId, string departmentId)
+        {
+            await this.administrationService.MakeDoctorBossOfDepartment(doctorId, departmentId);
+
+            return this.Redirect("/Administration/Dashboard/HospitalList");
+        }
+
+        public async Task<IActionResult> RemoveDoctorBossOfDepartment(string doctorId, string departmentId)
+        {
+            await this.administrationService.RemoveDoctorBossOfDepartment(doctorId, departmentId);
+
+            return this.Redirect("/Administration/Dashboard/HospitalList");
+        }
+
         #endregion
 
         #region Room
@@ -362,6 +376,22 @@
             await this.administrationService.RemoveRoomFromDepartment(roomId, departmentId);
 
             return this.Redirect("/Administration/Dashboard/HospitalList");
+        }
+
+        #endregion
+
+        #region Statistics
+
+        public async Task<IActionResult> PatientsStatistics()
+        {
+            var viewModel = await this.administrationService.GetPatientsStatisticsAsync();
+            return this.View("./Statistics/PatientsStatistics", viewModel);
+        }
+
+        public async Task<IActionResult> DoctorsStatistics()
+        {
+            var viewModel = await this.administrationService.GetDoctorsStatisticsAsync();
+            return this.View("./Statistics/DoctorsStatistics", viewModel);
         }
 
         #endregion

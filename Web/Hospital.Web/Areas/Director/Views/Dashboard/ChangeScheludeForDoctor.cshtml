@@ -1,0 +1,48 @@
+﻿﻿@using Hospital.Web.ViewModels.Directors.Schelude;
+
+@model ScheludeInputModel
+
+@foreach (var modelState in ViewData.ModelState.Values)
+{
+    foreach (var error in modelState.Errors)
+    {
+        <p class="error-message">@error.ErrorMessage</p>
+    }
+}
+
+<div class="row">
+    <div class="jumbotron col-md-12">
+        <div class="heading-container bottom-buffer-md">
+            <h1>Change doctor's schelude</h1>
+        </div>
+
+        <form class="mx-auto half-width col-5" method="post" asp-area="Director" asp-controller="Dashboard" asp-action="ChangeScheludeForDoctor">
+            <div class="top-border-line primary-separator"></div>
+
+            <div class="form-group">
+                <label asp-for="Date" class="suls-text-color">Date: </label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div> 
+
+            <div class="form-group">
+                <label asp-for="Shift" class="suls-text-color">Shift</label>
+                <input asp-for="Shift" class="form-control" placeholder="Shift...">
+                <span asp-validation-for="Shift" class="text-danger"></span>
+            </div>
+
+            @if (ViewBag.doctorId != null)
+            {
+                <input asp-for="Id" class="hide" hidden="hidden" value="@ViewBag.doctorId">
+            }
+            else
+            {
+                <input asp-for="Id" class="hide" hidden="hidden" value="@Model.Id">
+            }
+
+            <div class="top-border-line primary-separator"></div>
+
+            <button type="submit" class="btn forum-add-bg-color">Change</button>
+        </form>
+    </div>
+</div>

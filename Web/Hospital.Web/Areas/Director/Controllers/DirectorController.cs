@@ -10,9 +10,5 @@
     [Area("Director")]
     public class DirectorController : BaseController
     {
-        public IActionResult Index()
-        {
-            return this.View();
-        }
     }
 }

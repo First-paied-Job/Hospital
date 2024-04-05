@@ -1,0 +1,43 @@
+﻿@using Hospital.Web.ViewModels.Directors.Schelude
+
+@model Schelude
+
+<main class="mt-3">
+    <table>
+        <tr>
+            <th>Doctor Name</th>
+            <th>Date</th>
+            <th>Shift</th>
+            <th></th>
+        </tr>
+        @foreach (var doctor in Model.Doctors)
+        {
+            <tr>
+                <td>@doctor.DoctorName</td>
+                <td>@doctor.Date</td>
+                <td>@doctor.Shift</td>
+                <td>
+                    <a href="/Director/Dashboard/ChangeScheludeForDoctor?doctorId=@doctor.DoctorId" class="btn forum-go-back-btn text-uppercase">Change</a>
+                </td>
+            </tr>
+        }
+    </table>
+</main>
+
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>

@@ -7,6 +7,7 @@
     using Hospital.Web.ViewModels.Administration.Dashboard.Doctor;
     using Hospital.Web.ViewModels.Administration.Dashboard.Hospital;
     using Hospital.Web.ViewModels.Administration.Dashboard.Room;
+    using Hospital.Web.ViewModels.Administration.Dashboard.Statistics;
     using Hospital.Web.ViewModels.Administration.Dashboard.User;
 
     public interface IAdministrationService
@@ -78,6 +79,10 @@
 
         public Task RemoveDoctorFromDepartment(string doctorId, string departmentId);
 
+        public Task MakeDoctorBossOfDepartment(string doctorId, string departmentId);
+
+        public Task RemoveDoctorBossOfDepartment(string doctorId, string departmentId);
+
         #endregion
 
         #region Room
@@ -85,6 +90,14 @@
         public Task AddRoomToDepartment(AddRoomToDepartmentInput input);
 
         public Task RemoveRoomFromDepartment(string roomId, string departmentId);
+
+        #endregion
+
+        #region Statistics
+
+        public Task<ICollection<DoctorsViewModel>> GetPatientsStatisticsAsync();
+
+        public Task<ICollection<DepartmentsViewModel>> GetDoctorsStatisticsAsync();
 
         #endregion
     }

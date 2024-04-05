@@ -1,0 +1,32 @@
+﻿﻿@using Hospital.Web.ViewModels.Administration.Dashboard.Statistics;
+
+@model ICollection<DoctorsViewModel>
+
+<main class="mt-3">
+    @if (Model.Count == 0)
+    {
+        <h1 class="text-center suls-text-color">There are no patients at the moment!</h1>
+    }
+    else
+    {
+        <h1 class="text-center suls-text-color">Current doctors</h1>
+        @foreach (DoctorsViewModel doctor in Model)
+        {
+            <div>
+                <h3>Doctor Name - @doctor.Name</h3>
+                @if (doctor.Patients.Count > 0)
+                {
+                    <h3>List of patients: </h3>
+                    @foreach (var patient in doctor.Patients)
+                    {
+                        <p>* @patient.Name</p>
+                    }
+                }
+                else
+                {
+                    <p>@doctor.Name does not have patients</p>
+                }
+            </div>
+        }
+    }
+</main>

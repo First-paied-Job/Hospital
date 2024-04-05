@@ -28,7 +28,9 @@
 
         public async Task<IActionResult> RoomsInDepartment(string departmentId)
         {
-            var viewModel = await this.doctorService.GetRoomsInDepartment(departmentId);
+            var doctorId = this.User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+
+            var viewModel = await this.doctorService.GetRoomsInDepartment(departmentId, doctorId);
             return this.View(viewModel);
         }
 

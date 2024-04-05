@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Numerics;
     using System.Threading.Tasks;
     using Hospital.Common;
     using Hospital.Data;
@@ -15,6 +16,7 @@
     using Hospital.Web.ViewModels.Administration.Dashboard.Doctor;
     using Hospital.Web.ViewModels.Administration.Dashboard.Hospital;
     using Hospital.Web.ViewModels.Administration.Dashboard.Room;
+    using Hospital.Web.ViewModels.Administration.Dashboard.Statistics;
     using Hospital.Web.ViewModels.Administration.Dashboard.User;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
@@ -410,13 +412,28 @@
                 .ThenInclude(r => r.Patients)
                 .FirstOrDefaultAsync(h => h.HospitalId == hospitalId);
 
+            foreach (var d in hospital.Departments)
+            {
+                foreach (var r in d.Rooms)
+                {
+                    foreach (var p in r.Patients)
+                    {
+                        p.Doctor = null;
+                        p.DoctorId = null;
+                    }
+                }
+            }
+
             if (hospital == null)
             {
                 throw new ArgumentException("This hospital does not exist!");
             }
 
-            hospital.Director.HospitalId = null;
-            hospital.Director.Hospital = null;
+            if (hospital.Director != null)
+            {
+                hospital.Director.HospitalId = null;
+                hospital.Director.Hospital = null;
+            }
 
             this.db.Hospitals.Remove(hospital);
 
@@ -479,6 +496,8 @@
         {
             var hospital = await this.db.Hospitals
                 .Include(h => h.Departments)
+                .ThenInclude(d => d.Boss)
+                .Include(h => h.Departments)
                 .ThenInclude(c => c.Doctors)
                 .Include(h => h.Departments)
                 .ThenInclude(c => c.Rooms)
@@ -490,15 +509,22 @@
                     HospitalId = hospital.HospitalId,
                     DepartmentId = d.DepartmentId,
                     Name = d.Name,
+                    Boss = d.Boss == null ? null : new DoctorDTO
+                    {
+                        DepartmentId = d.DepartmentId,
+                        DoctorId = d.Boss.Id,
+                        Name = d.Boss.FullName,
+                        Qulifications = d.Boss.Qualification,
+                    },
                     Doctors = d.Doctors
+                        .Where(p => p.Id != d.BossId)
                         .Select(p => new DoctorDTO
                         {
                             DepartmentId = d.DepartmentId,
                             DoctorId = p.Id,
                             Name = p.FullName,
                             Qulifications = p.Qualification,
-                        })
-                        .ToList(),
+                        }).ToList(),
                     Rooms = d.Rooms
                         .Select(r => new RoomDTO
                         {
@@ -593,6 +619,51 @@
             await this.db.SaveChangesAsync();
         }
 
+        public async Task MakeDoctorBossOfDepartment(string doctorId, string departmentId)
+        {
+            var doctor = await this.db.Doctors.FindAsync(doctorId);
+
+            if (doctor.BossDepartmentId != null)
+            {
+                throw new ArgumentException("This doctor is a boss of another department!");
+            }
+
+            var department = await this.db.Departments.FindAsync(departmentId);
+
+            if (department.BossId != null)
+            {
+                throw new ArgumentException("This department has a boss already!");
+            }
+
+            department.Boss = doctor;
+            department.BossId = doctor.Id;
+
+            doctor.BossDepartment = department;
+            doctor.BossDepartmentId = department.DepartmentId;
+
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task RemoveDoctorBossOfDepartment(string doctorId, string departmentId)
+        {
+            var doctor = await this.db.Doctors.FindAsync(doctorId);
+
+            if (doctor.BossDepartmentId != departmentId)
+            {
+                throw new ArgumentException("This doctor is not a boss of this department!");
+            }
+
+            var department = await this.db.Departments.FindAsync(departmentId);
+
+            department.Boss = null;
+            department.BossId = null;
+
+            doctor.BossDepartment = null;
+            doctor.BossDepartmentId = null;
+
+            await this.db.SaveChangesAsync();
+        }
+
         #endregion
 
         #region Room
@@ -632,6 +703,38 @@
             department.Rooms.Remove(room);
             this.db.Rooms.Remove(room);
             await this.db.SaveChangesAsync();
+        }
+
+        #endregion
+
+        #region Statistics
+
+        public async Task<ICollection<DoctorsViewModel>> GetPatientsStatisticsAsync()
+        {
+            return await this.db.Doctors
+                .Include(d => d.Patients)
+                .Select(d => new DoctorsViewModel
+                {
+                    Name = d.FullName,
+                    Patients = d.Patients.Select(p => new global::Hospital.Web.ViewModels.Administration.Dashboard.Statistics.PatientDTO
+                    {
+                        Name = p.FullName,
+                    }).ToList(),
+                }).ToListAsync();
+        }
+
+        public async Task<ICollection<DepartmentsViewModel>> GetDoctorsStatisticsAsync()
+        {
+            return await this.db.Departments
+                .Include(d => d.Doctors)
+                .Select(d => new DepartmentsViewModel
+                {
+                    Name = d.Name,
+                    Doctors = d.Doctors.Select(dc => new DoctorInDepartmentDTO
+                    {
+                        Name = dc.FullName,
+                    }).ToList(),
+                }).ToListAsync();
         }
 
         #endregion

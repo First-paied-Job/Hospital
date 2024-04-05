@@ -21,6 +21,8 @@
 
         public async Task<IndexViewModel> GetInformationForPatient(string userId)
         {
+            var viewModel = new IndexViewModel();
+
             var p = await this.db.Patients.FindAsync(userId);
 
             if (p == null)
@@ -29,6 +31,11 @@
             }
 
             var room = await this.db.Rooms.FindAsync(p.RoomId);
+
+            if (room == null)
+            {
+                return viewModel;
+            }
 
             var department = await this.db.Departments.FindAsync(room.DepartmentId);
 

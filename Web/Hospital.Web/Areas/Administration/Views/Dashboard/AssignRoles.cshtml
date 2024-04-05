@@ -4,33 +4,71 @@
 
 <main class="mt-3">
     <h1 class="text-center suls-text-color">Current clinics</h1>
-    @foreach (UserRoleViewModel user in Model)
-    {
-        <div>
-            <h2>@user.UserEmail</h2>
-            @if (user.Roles.Count > 0)
-            {
-                <p>This user has these roles</p>
-                @foreach (var role in user.Roles)
-                {
-                    <div>
-                        <p>@role.Name</p>
-                        <a href="/Administration/Dashboard/RemoveUserRole?roleId=@role.RoleId&userId=@user.UserId" class="btn forum-go-back-btn text-uppercase">Remove @user.UserEmail from @(@role.Name)s</a>
-                    </div>
-                }
-            }
+       
+        @foreach (var user in Model)
+        {
+            <table>
+                <tr>
+                    <th>User</th>
+                    <td>@user.UserEmail</td>
+                </tr>
+                <tr>
+                    @if (user.Roles.Count > 0)
+                    {
+                        // This user has these roles
+                        @foreach (var role in user.Roles)
+                        {
+                            <th>@role.Name</th>
+                            <td>
+                                <a href="/Administration/Dashboard/RemoveUserRole?roleId=@role.RoleId&userId=@user.UserId" class="btn forum-go-back-btn text-uppercase">Remove @role.Name role</a>
+                            </td>
+                        }
+                        @for (int i = 0; i < 3 - user.Roles.Count; i++)
+                        {
+                            <th></th>
+                            <td></td>
+                        }
+                    }
+                </tr>
+                <tr>
+                    @if (user.AvailableRoles.Count > 0)
+                    {
+                        // This user has these roles
+                        @foreach (var role in user.AvailableRoles)
+                        {
+                            <th>@role.Name</th>
+                            <td>
+                                <a href="/Administration/Dashboard/AddUserRole?roleId=@role.RoleId&userId=@user.UserId" class="btn forum-go-back-btn text-uppercase">Add @role.Name role</a>
+                            </td>
+                        }
+                        @for (int i = 0; i < 3 - user.AvailableRoles.Count; i++)
+                        {
+                            <th></th>
+                            <td></td>
+                        }
+                    }
+                    
+
+                </tr>
+            </table>
             <br />
-            @if (user.AvailableRoles.Count > 0)
-            {
-                <p>This user can have these roles</p>
-                @foreach (var availableRole in user.AvailableRoles)
-                {
-                    <div>
-                        <p>@availableRole.Name</p>
-                        <a href="/Administration/Dashboard/AddUserRole?roleId=@availableRole.RoleId&userId=@user.UserId" class="btn forum-go-back-btn text-uppercase">Make @user.UserEmail a @availableRole.Name</a>
-                    </div>
-                }
-            }
-        </div>
-    }
+        }
 </main>
+
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>

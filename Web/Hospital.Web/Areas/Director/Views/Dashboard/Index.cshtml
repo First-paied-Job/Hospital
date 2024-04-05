@@ -1,0 +1,63 @@
+﻿@using Hospital.Web.ViewModels.Directors
+
+@model IndexViewModel
+
+<main class="mt-3">
+    @if (Model.Hospital == null)
+    {
+        <h1>You are not a director of any hospitals!</h1>
+    }
+    else
+    {
+        <h1>You are the director of @Model.Hospital.Name</h1>
+        <p>Location: @Model.Hospital.Location</p>
+        @if (Model.Hospital.Departments != null)
+        {
+            <h1>These are the departments in @Model.Hospital.Name</h1>
+            @foreach (DepartmentDTO department in Model.Hospital.Departments)
+            {
+                <h2>@department.Name</h2>
+                @if (department.Doctors.Count > 0)
+                {
+                    <h3>Doctors in this department: </h3>
+                    @foreach (DoctorDTO doctor in department.Doctors)
+                    {
+                        <h4>@doctor.Name</h4>
+                        <p>Qualifications: @doctor.Qualifications</p>
+                        <div>
+                            <a href="/Director/Dashboard/PatientsForDoctor?doctorId=@doctor.Id" class="btn forum-go-back-btn text-uppercase">See all of the patients of @doctor.Name</a>
+                        </div>
+                    }
+                }
+
+                @if (department.Rooms.Count > 0)
+                {
+                    <h3>Rooms in this department</h3>
+                    @foreach (RoomDTO room in department.Rooms)
+                    {
+                        <h4>@room.RoomName is a @room.RoomType room</h4>
+                        @if (room.Patients.Count > 0)
+                        {
+                            <h5>Patients in this room: </h5>
+                            @foreach (PatientDTO patient in room.Patients)
+                            {
+                                <h6>@patient.FullName</h6>
+                                <p>Days left: @patient.DaysStayCount</p>
+                            }
+                        }
+                    }
+                }
+
+                <div class="container">
+                    <div>
+                        <a href="/Director/Dashboard/SetScheludeForDoctors?departmentId=@department.DepartmentId" class="btn forum-go-back-btn text-uppercase">Set the schelude for the doctors in @department.Name</a>
+                    </div>
+
+                    <div>
+                        <a href="/Director/Dashboard/PatientsInDepartment?departmentId=@department.DepartmentId" class="btn forum-go-back-btn text-uppercase">See all of the patients in @department.Name</a>
+                    </div>
+                </div>
+            }
+        }
+    }
+</main>

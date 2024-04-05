@@ -1,5 +1,6 @@
 ﻿namespace Hospital.Data.Models.Hospitals.People
 {
+    using System;
     using System.Collections.Generic;
 
     public class Doctor
@@ -17,6 +18,10 @@
         public string Adress { get; set; }
 
         public string Qualification { get; set; }
+
+        public string Shift { get; set; }
+
+        public DateTime DateForWork { get; set; }
 
         public string? BossDepartmentId { get; set; }
 

@@ -20,7 +20,7 @@
 
         public Task<PatientInfoViewModel> GetPatientInfo(string patientId);
 
-        public Task<ICollection<RoomInDepartment>> GetRoomsInDepartment(string departmentId);
+        public Task<ICollection<RoomInDepartment>> GetRoomsInDepartment(string departmentId, string doctorId);
 
         public Task RemoveIlnessFromPatient(string illnessId, string patientId);
 

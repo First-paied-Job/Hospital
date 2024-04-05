@@ -10,6 +10,8 @@
 
         public string Name { get; set; }
 
+        public DoctorDTO Boss { get; set; }
+
         public List<DoctorDTO> Doctors { get; set; }
 
         public List<RoomDTO> Rooms { get; set; }

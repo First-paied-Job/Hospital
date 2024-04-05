@@ -1,0 +1,27 @@
+﻿@using Hospital.Web.ViewModels.Directors
+
+@model PatientForDoctor
+
+<main class="mt-3">
+    <h4>@Model.Name</h4>
+    <h4>Qualifications: @Model.Qualifications</h4>
+    <h4>Address: @Model.Address</h4>
+    @if (Model.Patients.Count > 0)
+    {
+        <h4>These are the patients of @Model.Name: (number of patients: @Model.Patients.Count)</h4>
+        @foreach (PatientForDoctorDTO patient in Model.Patients)
+        {
+            <h5>@patient.FullName</h5>
+            <p>Address: @patient.Address</p>
+            <p>Days left: @patient.DaysStayCount</p>
+            @if (patient.Illnesses.Count > 0)
+            {
+                <p>Illness of this patient: </p>
+                @foreach (IllnessDTO illness in patient.Illnesses)
+                {
+                    <p>* @illness.Name</p>
+                }
+            }
+        }
+    }
+</main>

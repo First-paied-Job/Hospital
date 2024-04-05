@@ -62,7 +62,7 @@
         }
 
         #region Room
-        public async Task<ICollection<RoomInDepartment>> GetRoomsInDepartment(string departmentId)
+        public async Task<ICollection<RoomInDepartment>> GetRoomsInDepartment(string departmentId, string doctorId)
         {
             var department = await this.db.Departments
                 .Include(d => d.Rooms)
@@ -74,7 +74,8 @@
                 RoomId = r.RoomId,
                 RoomName = r.Name,
                 RoomType = r.RoomType.ToString(),
-                Patients = r.Patients.Select(p => new PatientDTO
+                Patients = r.Patients.Where(p => p.DoctorId == doctorId)
+                .Select(p => new PatientDTO
                 {
                     FullName = p.FullName,
                     PatientId = p.Id,
@@ -118,6 +119,11 @@
                 {
                     throw new ArgumentException("This patient is in another room!");
                 }
+
+                patientCheck.FullName = input.FullName;
+                patientCheck.Adress = input.Address;
+                patientCheck.DaysStayCount = input.DayStayCount;
+                patientCheck.PhoneNumber = input.PhoneNumber;
 
                 room.Patients.Add(patientCheck);
                 patientCheck.Room = room;
