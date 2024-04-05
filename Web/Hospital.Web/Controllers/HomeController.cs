@@ -16,7 +16,18 @@
         {
             return this.View();
         }
-
+        public IActionResult Treatment()
+        {
+            return this.View();
+        }
+        public IActionResult Doctors()
+        {
+            return this.View();
+        }
+        public IActionResult ContactUs()
+        {
+            return this.View();
+        }
         public IActionResult Privacy()
         {
             return this.View();
