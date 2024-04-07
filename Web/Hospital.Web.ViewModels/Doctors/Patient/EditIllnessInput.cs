@@ -2,13 +2,13 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class AddIlnessToPatientInput
+    public class EditIllnessInput
     {
         [Required]
-        public string PatientId { get; set; }
+        public string Id { get; set; }
 
         [Required]
-        public string IllnessName { get; set; }
+        public string Name { get; set; }
 
         [Required]
         public string CureMethod { get; set; }

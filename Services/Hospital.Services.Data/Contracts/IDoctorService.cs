@@ -12,9 +12,13 @@
 
         public Task AddPatientToRoomAsync(AddPatientToRoomInput input);
 
+        public Task EditIllnessAsync(EditIllnessInput input);
+
         public Task EditPatientAsync(EditPatientInputModel input);
 
         public Task<IndexViewModel> GetDoctorsDepartmentsAsync(string userId);
+
+        public Task<EditIllnessViewModel> GetEditIllnessAsync(string illnessId);
 
         public Task<EditPatientViewModel> GetEditPatientAsync(string patientId);
 

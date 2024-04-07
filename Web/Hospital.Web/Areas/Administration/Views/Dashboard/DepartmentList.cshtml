@@ -14,18 +14,17 @@
         {
             <div>
                 <h2>Department Name - @department.Name</h2>
+                @if (department.Boss != null)
+                {
+                    <h3>Boss of the department: </h3>
+                    <p>@department.Boss.Name</p>
+                    <div>
+                        <a href="/Administration/Dashboard/RemoveDoctorBossOfDepartment?doctorId=@department.Boss.DoctorId&departmentId=@department.DepartmentId" class="btn forum-go-back-btn text-uppercase">Remove this doctor from being boss of this department</a>
+                    </div>
+                }
                 @if (department.Doctors.Count > 0)
                 {
                     <div>
-                        @if (department.Boss != null)
-                        {
-                            <h3>Boss of the department: </h3>
-                            <p>@department.Boss.Name</p>
-                            <div>
-                                <a href="/Administration/Dashboard/RemoveDoctorBossOfDepartment?doctorId=@department.Boss.DoctorId&departmentId=@department.DepartmentId" class="btn forum-go-back-btn text-uppercase">Remove this doctor from being boss of this department</a>
-                            </div>
-                        }
-
                         <h4>Doctors in this department: </h4>
                         @foreach (DoctorDTO doctor in department.Doctors)
                         {

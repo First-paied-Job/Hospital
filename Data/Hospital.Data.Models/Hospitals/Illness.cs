@@ -12,5 +12,7 @@
         public string IllnessId { get; set; }
 
         public string Name { get; set; }
+
+        public string CureMethod { get; set; }
     }
 }

@@ -12,8 +12,12 @@
     {
         <div>
             <h2>Illness name - @illness.Name</h2>
+            <h2>Cure method - @illness.CureMethod</h2>
             <div>
                 <a href="/Doctor/Dashboard/RemoveIlnessFromPatient?illnessId=@illness.Id&patientId=@Model.PatientId" class="btn forum-go-back-btn text-uppercase">Remove this ilness from this patient</a>
+            </div>
+            <div>
+                <a href="/Doctor/Dashboard/EditIllness?illnessId=@illness.Id" class="btn forum-go-back-btn text-uppercase">Edit illness</a>
             </div>
         </div>
     }

@@ -25,6 +25,13 @@
                 <span asp-validation-for="IllnessName" class="text-danger"></span>
             </div>
 
+
+            <div class="form-group">
+                <label asp-for="CureMethod" class="suls-text-color">Cure method</label>
+                <input asp-for="CureMethod" class="form-control" placeholder="Cure method...">
+                <span asp-validation-for="CureMethod" class="text-danger"></span>
+            </div>
+
             @if (ViewBag.patientId != null)
             {
                 <input asp-for="PatientId" class="hide" hidden="hidden" value="@ViewBag.patientId">

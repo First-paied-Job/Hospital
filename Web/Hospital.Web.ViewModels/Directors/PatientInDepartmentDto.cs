@@ -10,6 +10,8 @@
 
         public string Address { get; set; }
 
+        public int Payment { get; set; }
+
         public int DaysStayCount { get; set; }
 
         public List<IllnessDTO> Illnesses { get; set; }

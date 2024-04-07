@@ -6,6 +6,8 @@
     {
         public string PatientId { get; set; }
 
+        public int Payment { get; set; }
+
         public DoctorDTO Doctor { get; set; }
 
         public DepartmentDTO Department { get; set; }

@@ -20,6 +20,7 @@
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
 
+            // Get departments that doctor is in
             var viewModel = await this.doctorService.GetDoctorsDepartmentsAsync(userId);
             return this.View(viewModel);
         }
@@ -30,6 +31,7 @@
         {
             var doctorId = this.User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
 
+            // Get rooms in department
             var viewModel = await this.doctorService.GetRoomsInDepartment(departmentId, doctorId);
             return this.View(viewModel);
         }
@@ -47,6 +49,7 @@
         {
             try
             {
+                // Add patient to room
                 await this.doctorService.AddPatientToRoomAsync(input);
             }
             catch (System.Exception e)
@@ -64,6 +67,7 @@
 
         public async Task<IActionResult> RemovePatientFromRoom(string patientId, string roomId)
         {
+            // Remove patient
             await this.doctorService.RemovePatientFromRoomAsync(patientId, roomId);
 
             return this.Redirect("/Doctor/Dashboard");
@@ -75,6 +79,7 @@
 
         public async Task<IActionResult> PatientInfo(string patientId)
         {
+            // Get view model for patient
             var viewModel = await this.doctorService.GetPatientInfo(patientId);
             return this.View(viewModel);
         }
@@ -90,6 +95,7 @@
         {
             try
             {
+                // Add illness to patient
                 await this.doctorService.AddIllnesToPatientAsync(input);
             }
             catch (System.Exception e)
@@ -107,6 +113,7 @@
 
         public async Task<IActionResult> RemoveIlnessFromPatient(string illnessId, string patientId)
         {
+            // Remove illness from patient
             await this.doctorService.RemoveIlnessFromPatient(illnessId, patientId);
 
             return this.Redirect($"/Doctor/Dashboard/PatientInfo?patientId={patientId}");
@@ -114,6 +121,7 @@
 
         public async Task<IActionResult> EditPatient(string patientId)
         {
+            // Get edit view model
             var viewModel = await this.doctorService.GetEditPatientAsync(patientId);
             return this.View(viewModel);
         }
@@ -123,6 +131,7 @@
         {
             try
             {
+                // Edit patient
                 await this.doctorService.EditPatientAsync(input);
             }
             catch (System.Exception e)
@@ -132,10 +141,38 @@
 
             if (!this.ModelState.IsValid)
             {
-                return this.View("AddIlnessToPatient", input);
+                return this.View("EditPatient", input);
             }
 
             return this.Redirect($"/Doctor/Dashboard/PatientInfo?patientId={input.PatientId}");
+        }
+
+        public async Task<IActionResult> EditIllness(string illnessId)
+        {
+            // Get edit view model
+            var viewModel = await this.doctorService.GetEditIllnessAsync(illnessId);
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditIllnessPost(EditIllnessInput input)
+        {
+            try
+            {
+                // Edit patient
+                await this.doctorService.EditIllnessAsync(input);
+            }
+            catch (System.Exception e)
+            {
+                this.ModelState.AddModelError("noIllness", e.Message);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View("EditIllness", input);
+            }
+
+            return this.Redirect($"/Doctor/Dashboard");
         }
 
         #endregion

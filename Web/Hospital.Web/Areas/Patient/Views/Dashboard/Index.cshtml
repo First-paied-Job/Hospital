@@ -28,8 +28,9 @@
             <h3>You have these illnesses at the moment:</h3>
             foreach (IllnessDTO illness in Model.Illnesses)
             {
-                <p>* @illness.Name</p>
+                <p>* @illness.Name - Cure method: @illness.CureMethod</p>
             }
         }
+        <p>Payment for stay: @Model.Payment</p>
     }
 </main>

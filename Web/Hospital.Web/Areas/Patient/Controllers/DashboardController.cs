@@ -19,6 +19,7 @@
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
 
+            // Get patient info
             var viewModel = await this.patientService.GetInformationForPatient(userId);
 
             return this.View(viewModel);

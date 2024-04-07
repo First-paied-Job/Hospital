@@ -1,6 +1,6 @@
-﻿namespace Hospital.Web.ViewModels.Patients
+﻿namespace Hospital.Web.ViewModels.Doctors.Patient
 {
-    public class IllnessDTO
+    public class EditIllnessViewModel
     {
         public string Id { get; set; }
 
