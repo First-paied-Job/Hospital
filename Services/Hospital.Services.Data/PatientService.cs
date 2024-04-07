@@ -28,7 +28,10 @@
 
             if (p == null)
             {
-                throw new ArgumentException("You are not a patient!");
+                return new IndexViewModel()
+                {
+                    PatientId = null,
+                };
             }
 
             // Get room by id

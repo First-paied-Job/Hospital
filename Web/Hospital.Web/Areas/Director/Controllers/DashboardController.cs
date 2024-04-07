@@ -3,6 +3,7 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Hospital.Services.Data.Contracts;
+    using Hospital.Web.ViewModels.Directors;
     using Hospital.Web.ViewModels.Directors.Schelude;
     using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,22 @@
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
 
             // Get info about director
-            var viewModel = await this.directorService.GetDirectorInfo(userId);
+            var viewModel = new IndexViewModel();
+            try
+            {
+                // Sets the schelude for doctors
+                viewModel = await this.directorService.GetDirectorInfo(userId);
+            }
+            catch (System.Exception e)
+            {
+                this.ModelState.AddModelError("director", e.Message);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View("Index", viewModel);
+            }
+
             return this.View(viewModel);
         }
 

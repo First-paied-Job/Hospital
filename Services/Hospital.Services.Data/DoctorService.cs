@@ -36,6 +36,15 @@
                 .Include(d => d.BossDepartment)
                 .FirstOrDefaultAsync(d => d.Id == userId);
 
+            if (doctor == null)
+            {
+                return new IndexViewModel()
+                {
+                    BossOfDepartment = null,
+                    Departments = new List<DoctorDepartmentDTO>(),
+                };
+            }
+
             // Convert to Doctor Department DTO
             var departments = doctor.Departments
                 .Select(d => new DoctorDepartmentDTO

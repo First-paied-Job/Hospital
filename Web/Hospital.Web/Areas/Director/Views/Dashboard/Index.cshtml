@@ -2,6 +2,14 @@
 
 @model IndexViewModel
 
+@foreach (var modelState in ViewData.ModelState.Values)
+{
+    foreach (var error in modelState.Errors)
+    {
+        <p class="error-message">@error.ErrorMessage</p>
+    }
+}
+
 <main class="mt-3">
     @if (Model.Hospital == null)
     {
