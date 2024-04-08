@@ -91,6 +91,9 @@
 
         public Task RemoveRoomFromDepartment(string roomId, string departmentId);
 
+        public Task<EditRoomView> GetRoomEdit(string roomId);
+        public Task EditRoomAsync(EditRoomInput input);
+
         #endregion
 
         #region Statistics

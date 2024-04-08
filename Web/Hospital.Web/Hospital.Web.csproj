@@ -40,4 +40,11 @@
     <ProjectReference Include="..\Hospital.Web.Infrastructure\Hospital.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\Hospital.Web.ViewModels\Hospital.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Areas\Administration\Views\Dashboard\EditDepartment.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

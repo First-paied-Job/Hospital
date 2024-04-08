@@ -404,6 +404,24 @@
             return this.Redirect("/Administration/Dashboard/HospitalList");
         }
 
+        public async Task<IActionResult> EditRoom(string roomId)
+        {
+            // Get edit view model
+            var viewModel = await this.administrationService.GetRoomEdit(roomId);
+
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditRoomPost(EditRoomInput input)
+        {
+            // Edin department in db
+            await this.administrationService.EditRoomAsync(input);
+
+            return this.Redirect($"/Administration/Dashboard/HospitalList");
+        }
+
+
         #endregion
 
         #region Statistics

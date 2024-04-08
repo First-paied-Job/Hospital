@@ -810,6 +810,37 @@
             await this.db.SaveChangesAsync();
         }
 
+        public async Task<EditRoomView> GetRoomEdit(string roomId)
+        {
+            var room = await this.db.Rooms.FindAsync(roomId);
+
+            if (room == null)
+            {
+                throw new ArgumentException("Room does not exist");
+            }
+
+            return new EditRoomView
+            {
+                RoomId = room.RoomId,
+                RoomType = room.RoomType.ToString(),
+                Name = room.Name,
+            };
+        }
+
+        public async Task EditRoomAsync(EditRoomInput input)
+        {
+            var room = await this.db.Rooms.FindAsync(input.RoomId);
+
+            if (room == null)
+            {
+                throw new ArgumentException("Room does not exist");
+            }
+
+            room.Name = input.Name;
+            room.RoomTypeId = int.Parse(input.RoomType);
+            await this.db.SaveChangesAsync();
+        }
+
         #endregion
 
         #region Statistics
